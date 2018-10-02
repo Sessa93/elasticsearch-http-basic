@@ -12,7 +12,6 @@
     <url>https://github.com/Cleafy/elasticsearch-http-basic</url>
     <inceptionYear>2018</inceptionYear>
 
-
     <properties>
         <tests.jvms>1</tests.jvms>
         <es.logger.level>INFO</es.logger.level>
@@ -60,6 +59,7 @@
     </dependencies>
 
     <build>
+        <finalName>elasticsearch-http-basic-plugin</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
