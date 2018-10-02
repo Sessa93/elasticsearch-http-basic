@@ -1,11 +1,20 @@
 language: java
+before_script:
+  - composer self-update -q
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
+  - if [ -z "$dependencies" ]; then composer install; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
+  - composer show -i
 script:
-- mvn clean verify
-- mvn package
+  - mvn clean verify
+  - mvn package
 deploy:
   skip_cleanup: true
   provider: releases
   file: target/releases/elasticsearch-http-basic-plugin.zip
+  secure:
+    api_key: b1f302f147825ef828d64a77cc5e37a9898f34a6
   on:
     repo: Sessa93/elasticsearch-http-basic
     tags: true
