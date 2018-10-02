@@ -19,19 +19,16 @@ public class BasicRestFilter {
     }
 
     public RestHandler wrap(RestHandler original) {
-        return new RestHandler() {
-            @Override
-            public void handleRequest(RestRequest request, RestChannel channel, NodeClient client) throws Exception {
-                if(!checkAndAuthenticateRequest(request, channel, client)) {
-                    original.handleRequest(request, channel, client);
-                }
+        return (request, channel, client) -> {
+            if (!checkAndAuthenticateRequest(request, channel, client)) {
+                original.handleRequest(request, channel, client);
             }
         };
     }
 
     private boolean checkAndAuthenticateRequest(RestRequest request, RestChannel channel, NodeClient client) throws Exception {
         try {
-            if(this.httpBasicAuthenticator.authenticate(request)) {
+            if (this.httpBasicAuthenticator.authenticate(request)) {
                 return false;
             }
             ElasticsearchException forbiddenException = new TransportException("Forbidden");

@@ -1,9 +1,7 @@
 package com.asquera.elasticsearch.plugins.http.auth;
 
-import com.sun.tools.javac.util.StringUtils;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.rest.RestRequest;
-import java.util.Base64;
 
 public class HttpBasicAuthenticator extends Authenticator {
     private AuthCredentials credentials;
@@ -24,7 +22,7 @@ public class HttpBasicAuthenticator extends Authenticator {
     private AuthCredentials extractCredentials(final RestRequest request) {
         final boolean forceLogin = request.paramAsBoolean("force_login", false);
 
-        if(forceLogin) {
+        if (forceLogin) {
             return null;
         }
 

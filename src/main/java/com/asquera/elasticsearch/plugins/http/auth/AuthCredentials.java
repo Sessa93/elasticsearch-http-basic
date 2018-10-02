@@ -43,7 +43,7 @@ public class AuthCredentials {
         // make defensive copy
         this.password = password == null ? null : Arrays.copyOf(password, password.length);
 
-        if(this.password != null) {
+        if (this.password != null) {
             try {
                 MessageDigest digester = MessageDigest.getInstance(DIGEST_ALGORITHM);
                 internalPasswordHash = digester.digest(this.password);
@@ -54,7 +54,7 @@ public class AuthCredentials {
             internalPasswordHash = null;
         }
 
-        if(password != null) {
+        if (password != null) {
             Arrays.fill(password, (byte) '\0');
             password = null;
         }
@@ -62,7 +62,7 @@ public class AuthCredentials {
         this.nativeCredentials = nativeCredentials;
         nativeCredentials = null;
 
-        if(backendRoles != null && backendRoles.length > 0) {
+        if (backendRoles != null && backendRoles.length > 0) {
             this.backendRoles.addAll(Arrays.asList(backendRoles));
         }
     }
@@ -84,8 +84,7 @@ public class AuthCredentials {
     }
 
     /**
-     *
-     * @return Defensive copy of the password
+     * @return Defensive copy of the password4
      */
     public byte[] getPassword() {
         // make defensive copy
@@ -127,11 +126,10 @@ public class AuthCredentials {
     @Override
     public String toString() {
         return "AuthCredentials [username=" + username + ", password empty=" + (password == null) + ", nativeCredentials empty="
-                + (nativeCredentials == null) + ",backendRoles="+backendRoles+"]";
+                + (nativeCredentials == null) + ",backendRoles=" + backendRoles + "]";
     }
 
     /**
-     *
      * @return Defensive copy of the roles this user is member of.
      */
     public Set<String> getBackendRoles() {
@@ -156,7 +154,7 @@ public class AuthCredentials {
     }
 
     public void addAttribute(String name, String value) {
-        if(name != null && !name.isEmpty()) {
+        if (name != null && !name.isEmpty()) {
             this.attributes.put(name, value);
         }
     }
