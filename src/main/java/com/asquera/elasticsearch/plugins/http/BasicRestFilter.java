@@ -15,7 +15,7 @@ public class BasicRestFilter {
     public BasicRestFilter(final Settings settings) {
         super();
         this.settings = settings;
-        this.httpBasicAuthenticator = new HttpBasicAuthenticator(this.settings, new AuthCredentials(settings.get("http.basic.username"), settings.get("http.basic.password").getBytes()));
+        this.httpBasicAuthenticator = new HttpBasicAuthenticator(this.settings, new AuthCredentials(settings.get("http.basic.username", ""), settings.get("http.basic.password", "").getBytes()));
     }
 
     public RestHandler wrap(RestHandler original) {
