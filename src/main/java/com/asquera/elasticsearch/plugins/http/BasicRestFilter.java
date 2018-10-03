@@ -15,7 +15,7 @@ public class BasicRestFilter {
     public BasicRestFilter(final Settings settings) {
         super();
         this.settings = settings;
-        this.httpBasicAuthenticator = new HttpBasicAuthenticator(this.settings, new AuthCredentials(settings.get("http.basic.username", ""), settings.get("http.basic.password", "").getBytes()));
+        this.httpBasicAuthenticator = new HttpBasicAuthenticator(this.settings, new AuthCredentials(settings.get("http.basic.username", "pippo"), settings.get("http.basic.password", "pippo").getBytes()));
     }
 
     public RestHandler wrap(RestHandler original) {
@@ -27,14 +27,14 @@ public class BasicRestFilter {
     }
 
     private boolean checkAndAuthenticateRequest(RestRequest request, RestChannel channel, NodeClient client) throws Exception {
+        ElasticsearchException forbiddenException = new TransportException("Forbidden");
         try {
             if (this.httpBasicAuthenticator.authenticate(request)) {
                 return false;
             }
-            ElasticsearchException forbiddenException = new TransportException("Forbidden");
             channel.sendResponse(new BytesRestResponse(channel, RestStatus.FORBIDDEN, forbiddenException));
         } catch (Exception e) {
-            channel.sendResponse(new BytesRestResponse(channel, RestStatus.FORBIDDEN, e));
+            channel.sendResponse(new BytesRestResponse(channel, RestStatus.FORBIDDEN, forbiddenException));
             return true;
         }
         return true;

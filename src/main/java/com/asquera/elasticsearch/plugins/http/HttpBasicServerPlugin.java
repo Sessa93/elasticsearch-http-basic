@@ -1,12 +1,15 @@
 package com.asquera.elasticsearch.plugins.http;
 
 import org.elasticsearch.common.inject.Inject;
+import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.concurrent.ThreadContext;
 import org.elasticsearch.plugins.ActionPlugin;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.rest.RestHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.UnaryOperator;
 
 
@@ -15,7 +18,7 @@ import java.util.function.UnaryOperator;
  */
 public class HttpBasicServerPlugin extends Plugin implements ActionPlugin {
 
-    private boolean enabledByDefault = true;
+    private boolean enabledByDefault = false;
     private final Settings settings;
     BasicRestFilter basicFilter;
 
@@ -35,9 +38,33 @@ public class HttpBasicServerPlugin extends Plugin implements ActionPlugin {
 
     @Override
     public UnaryOperator<RestHandler> getRestHandlerWrapper(final ThreadContext threadContext) {
-        if (this.settings.getAsBoolean("http.basic.enabled", false)) {
+        if (this.settings.getAsBoolean("http.basic.enabled", enabledByDefault)) {
             return (rh) -> basicFilter.wrap(rh);
         }
         return (rh) -> rh;
+    }
+
+    @Override
+    public Settings additionalSettings() {
+        if (this.settings.getAsBoolean("http.basic.enabled", enabledByDefault)) {
+            final Settings.Builder builder = Settings.builder();
+            builder.put(super.additionalSettings());
+            return builder.build();
+        } else {
+            return Settings.EMPTY;
+        }
+    }
+
+    @Override
+    public List<Setting<?>> getSettings() {
+        List<Setting<?>> settings = new ArrayList<Setting<?>>();
+
+        settings.addAll(super.getSettings());
+
+        settings.add(Setting.boolSetting("http.basic.enabled", enabledByDefault, Setting.Property.NodeScope, Setting.Property.Filtered));
+        settings.add(Setting.simpleString("http.basic.username", Setting.Property.NodeScope, Setting.Property.Filtered));
+        settings.add(Setting.simpleString("http.basic.password", Setting.Property.NodeScope, Setting.Property.Filtered));
+
+        return settings;
     }
 }
