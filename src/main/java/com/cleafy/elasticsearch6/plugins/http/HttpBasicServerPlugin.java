@@ -1,5 +1,6 @@
-package com.asquera.elasticsearch.plugins.http;
+package com.cleafy.elasticsearch6.plugins.http;
 
+import com.cleafy.elasticsearch6.plugins.http.utils.Globals;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Settings;
@@ -38,7 +39,7 @@ public class HttpBasicServerPlugin extends Plugin implements ActionPlugin {
 
     @Override
     public UnaryOperator<RestHandler> getRestHandlerWrapper(final ThreadContext threadContext) {
-        if (this.settings.getAsBoolean("http.basic.enabled", enabledByDefault)) {
+        if (this.settings.getAsBoolean(Globals.SETTINGS_ENABLED, enabledByDefault)) {
             return (rh) -> basicFilter.wrap(rh);
         }
         return (rh) -> rh;
@@ -46,7 +47,7 @@ public class HttpBasicServerPlugin extends Plugin implements ActionPlugin {
 
     @Override
     public Settings additionalSettings() {
-        if (this.settings.getAsBoolean("http.basic.enabled", enabledByDefault)) {
+        if (this.settings.getAsBoolean(Globals.SETTINGS_ENABLED, enabledByDefault)) {
             final Settings.Builder builder = Settings.builder();
             builder.put(super.additionalSettings());
             return builder.build();
@@ -61,9 +62,10 @@ public class HttpBasicServerPlugin extends Plugin implements ActionPlugin {
 
         settings.addAll(super.getSettings());
 
-        settings.add(Setting.boolSetting("http.basic.enabled", enabledByDefault, Setting.Property.NodeScope, Setting.Property.Filtered));
-        settings.add(Setting.simpleString("http.basic.username", Setting.Property.NodeScope, Setting.Property.Filtered));
-        settings.add(Setting.simpleString("http.basic.password", Setting.Property.NodeScope, Setting.Property.Filtered));
+        settings.add(Setting.boolSetting(Globals.SETTINGS_ENABLED, enabledByDefault, Setting.Property.NodeScope, Setting.Property.Filtered));
+        settings.add(Setting.simpleString(Globals.SETTINGS_USERNAME, Setting.Property.NodeScope, Setting.Property.Filtered));
+        settings.add(Setting.simpleString(Globals.SETTINGS_PASSWORD, Setting.Property.NodeScope, Setting.Property.Filtered));
+        settings.add(Setting.boolSetting(Globals.SETTINGS_LOG, false, Setting.Property.NodeScope, Setting.Property.Filtered));
 
         return settings;
     }

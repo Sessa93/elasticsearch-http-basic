@@ -19,7 +19,7 @@
             <useProjectArtifact>true</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <includes>
-                <include>com.asquera.elasticsearch:elasticsearch-http-basic</include>
+                <include>com.cleafy.elasticsearch:elasticsearch6-http-basic</include>
             </includes>
         </dependencySet>
     </dependencySets>

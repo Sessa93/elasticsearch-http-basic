@@ -1,4 +1,4 @@
-package com.asquera.elasticsearch.plugins.http.auth;
+package com.cleafy.elasticsearch6.plugins.http.auth;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
