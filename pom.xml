@@ -70,14 +70,11 @@
     </dependencies>
 
     <build>
-        <finalName>elasticsearch-http-basic-plugin</finalName>
+        <finalName>elasticsearch6-http-basic-plugin</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
-                <excludes>
-                    <exclude>*.properties</exclude>
-                </excludes>
             </resource>
         </resources>
 
